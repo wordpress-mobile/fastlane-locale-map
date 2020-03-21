@@ -92,7 +92,7 @@ describe FastlaneLocaleMap do
 
   describe '.add_provider' do
     it 'adds the provider to the list' do
-      expect(described_class.providers.length).to eq 0
+      expect(described_class.providers).to be_empty
       described_class.add_provider TestProvider.new
       expect(described_class.providers.length).to eq 1
     end
