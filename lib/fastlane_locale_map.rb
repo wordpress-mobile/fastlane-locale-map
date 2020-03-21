@@ -2,7 +2,7 @@ $providers = []
 
 module FastlaneLocaleMap
   def self.all
-    require 'Hash+deep_merge'
+    require 'deep_merge'
 
     locales = self.locales
 

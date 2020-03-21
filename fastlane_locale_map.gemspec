@@ -11,6 +11,8 @@ Gem::Specification.new do |s|
   s.homepage = 'https://github.com/wordpress-mobile/fastlane-locale-map'
   s.license = 'MIT'
 
+  s.add_dependency 'deep_merge', '~> 1.0'
+
   s.add_development_dependency 'coveralls', '~> 0.8'
   s.add_development_dependency 'rake', '~> 13.0'
   s.add_development_dependency 'rspec', '~> 3.9'
