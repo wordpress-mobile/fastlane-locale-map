@@ -1,18 +1,5 @@
 require 'spec_helper'
 
-class TestProvider
-  def locales
-    {
-      arSA: {
-        test: 'foo'
-      },
-      foo: {
-        test: 'foo'
-      }
-    }
-  end
-end
-
 describe FastlaneLocaleMap do # rubocop:todo Metrics/BlockLength
   before do
     described_class.providers.each do |provider|
@@ -28,14 +15,14 @@ describe FastlaneLocaleMap do # rubocop:todo Metrics/BlockLength
     end
 
     it 'integrates changes to existing locales from providers' do
-      described_class.add_provider TestProvider.new
+      described_class.add_provider TestLocaleProvider.new
       locales = described_class.all
 
       expect(locales[:arSA][:test]).to eq 'foo'
     end
 
     it 'integrates changes to new locales from providers' do
-      described_class.add_provider TestProvider.new
+      described_class.add_provider TestLocaleProvider.new
       locales = described_class.all
 
       expect(locales[:foo][:test]).to eq 'foo'
@@ -93,8 +80,20 @@ describe FastlaneLocaleMap do # rubocop:todo Metrics/BlockLength
   describe '.add_provider' do
     it 'adds the provider to the list' do # rubocop:todo RSpec/MultipleExpectations
       expect(described_class.providers).to be_empty
-      described_class.add_provider TestProvider.new
+      described_class.add_provider TestLocaleProvider.new
       expect(described_class.providers.length).to eq 1
+    end
+
+    it 'raises for invalid providers' do
+      expect do
+        described_class.add_provider Object.new
+      end.to raise_error(RuntimeError)
+    end
+
+    it 'raises for non-conforming providers' do
+      expect do
+        described_class.add_provider NonConformingLocaleProvider.new
+      end.to raise_error(RuntimeError)
     end
   end
 end

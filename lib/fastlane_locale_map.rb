@@ -1,5 +1,4 @@
 module FastlaneLocaleMap # rubocop:todo Metrics/ModuleLength
-
   @@providers = []
 
   def self.all
@@ -33,6 +32,9 @@ module FastlaneLocaleMap # rubocop:todo Metrics/ModuleLength
   end
 
   def self.add_provider(provider)
+    raise 'Providers must implement the `LocaleProvider` module.' unless defined? provider.locales
+    raise 'Providers must return a hash object' unless provider.locales.is_a? Hash
+
     @@providers.append provider
   end
 
