@@ -1,12 +1,12 @@
-$providers = []
-
 module FastlaneLocaleMap
+  @@providers = []
+
   def self.all
     require 'deep_merge'
 
     locales = self.locales
 
-    $providers.each do |provider|
+    @@providers.each do |provider|
       locales = locales.deep_merge provider.locales
     end
 
@@ -32,16 +32,16 @@ module FastlaneLocaleMap
   end
 
   def self.add_provider(provider)
-    $providers.append provider
+    @@providers.append provider
   end
 
   def self.remove_provider(provider)
-    index = $providers.index(provider)
-    $providers.delete_at index
+    index = @@providers.index(provider)
+    @@providers.delete_at index
   end
 
   def self.providers
-    $providers
+    @@providers
   end
 
   def self.locales
