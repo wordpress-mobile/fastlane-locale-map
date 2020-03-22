@@ -16,33 +16,33 @@ class LocaleMap # rubocop:todo Metrics/ClassLength
     locales = self.locales
 
     @providers.each do |provider|
-      locales = locales.deep_merge provider.locales
+      locales = locales.deep_merge provider.locale_map
     end
 
     locales
   end
 
   def app_store_connect
-    all.each_with_object({}) do |(key, locale), hash|
-      hash[key] = locale[:appStore]
-    end
+    only(:appStore)
   end
 
   def google_play
-    all.each_with_object({}) do |(key, locale), hash|
-      hash[key] = locale[:playStore]
-    end
+    only(:playStore)
   end
 
   def iso_codes
+    only(:iso)
+  end
+
+  def only(token)
     all.each_with_object({}) do |(key, locale), hash|
-      hash[key] = locale[:iso]
+      hash[key] = locale[token]
     end
   end
 
   def add_provider(provider)
-    raise 'Providers must implement the `LocaleProvider` module.' unless defined? provider.locales
-    raise 'Providers must return a hash object' unless provider.locales.is_a? Hash
+    raise 'Providers must implement the `LocaleProvider` module.' unless defined? provider.locale_map
+    raise 'Providers must return a hash object' unless provider.locale_map.is_a? Hash
 
     @providers.append provider
   end

@@ -1,6 +1,6 @@
 class TestLocaleProvider
   include LocaleProvider
-  def locales
+  def locale_map
     {
       arSA: {
         test: 'foo'
