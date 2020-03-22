@@ -13,7 +13,7 @@ class TestProvider
   end
 end
 
-describe FastlaneLocaleMap do
+describe FastlaneLocaleMap do # rubocop:todo Metrics/BlockLength
   before do
     described_class.providers.each do |provider|
       described_class.remove_provider provider
@@ -91,7 +91,7 @@ describe FastlaneLocaleMap do
   end
 
   describe '.add_provider' do
-    it 'adds the provider to the list' do
+    it 'adds the provider to the list' do # rubocop:todo RSpec/MultipleExpectations
       expect(described_class.providers).to be_empty
       described_class.add_provider TestProvider.new
       expect(described_class.providers.length).to eq 1

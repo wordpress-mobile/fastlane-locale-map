@@ -1,4 +1,5 @@
-module FastlaneLocaleMap
+module FastlaneLocaleMap # rubocop:todo Metrics/ModuleLength
+
   @@providers = []
 
   def self.all
@@ -44,7 +45,7 @@ module FastlaneLocaleMap
     @@providers
   end
 
-  def self.locales
+  def self.locales # rubocop:todo Metrics/MethodLength
     {
       arSA: {
         english: 'Arabic (Saudi Arabia)',
