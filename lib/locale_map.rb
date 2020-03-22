@@ -1,53 +1,58 @@
-module FastlaneLocaleMap # rubocop:todo Metrics/ModuleLength
-  @@providers = []
+##
+# This class provides a map of locale codes between Google Play and App Store Connect.
+# It's expected that consumers of this class will add the locale codes used by their own
+# systems to this mapping.
+# Locales are keyed by ISO code (which is included with each locale)
+class LocaleMap # rubocop:todo Metrics/ClassLength
+  attr_accessor :providers
 
-  def self.all
+  def initialize
+    @providers = []
+  end
+
+  def all
     require 'deep_merge'
 
     locales = self.locales
 
-    @@providers.each do |provider|
+    @providers.each do |provider|
       locales = locales.deep_merge provider.locales
     end
 
     locales
   end
 
-  def self.app_store_connect
+  def app_store_connect
     all.each_with_object({}) do |(key, locale), hash|
       hash[key] = locale[:appStore]
     end
   end
 
-  def self.google_play
+  def google_play
     all.each_with_object({}) do |(key, locale), hash|
       hash[key] = locale[:playStore]
     end
   end
 
-  def self.iso_codes
+  def iso_codes
     all.each_with_object({}) do |(key, locale), hash|
       hash[key] = locale[:iso]
     end
   end
 
-  def self.add_provider(provider)
+  def add_provider(provider)
     raise 'Providers must implement the `LocaleProvider` module.' unless defined? provider.locales
     raise 'Providers must return a hash object' unless provider.locales.is_a? Hash
 
-    @@providers.append provider
+    @providers.append provider
   end
 
-  def self.remove_provider(provider)
-    index = @@providers.index(provider)
-    @@providers.delete_at index
+  def remove_provider(provider)
+    index = @providers.index(provider)
+    @providers.delete_at index
   end
 
-  def self.providers
-    @@providers
-  end
-
-  def self.locales # rubocop:todo Metrics/MethodLength
+  def locales # rubocop:todo Metrics/MethodLength
     {
       arSA: {
         english: 'Arabic (Saudi Arabia)',

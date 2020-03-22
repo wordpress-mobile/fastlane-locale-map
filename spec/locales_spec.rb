@@ -1,29 +1,24 @@
 require 'spec_helper'
 
-describe FastlaneLocaleMap do # rubocop:todo Metrics/BlockLength
-  before do
-    described_class.providers.each do |provider|
-      described_class.remove_provider provider
-    end
-  end
-
+describe LocaleMap do # rubocop:todo Metrics/BlockLength
   expected_locale_count = 39
+  let(:map) { described_class.new }
 
   describe '.all' do
     it 'returns all locales' do
-      expect(described_class.all.length).to eq expected_locale_count
+      expect(map.all.length).to eq expected_locale_count
     end
 
     it 'integrates changes to existing locales from providers' do
-      described_class.add_provider TestLocaleProvider.new
-      locales = described_class.all
+      map.add_provider TestLocaleProvider.new
+      locales = map.all
 
       expect(locales[:arSA][:test]).to eq 'foo'
     end
 
     it 'integrates changes to new locales from providers' do
-      described_class.add_provider TestLocaleProvider.new
-      locales = described_class.all
+      map.add_provider TestLocaleProvider.new
+      locales = map.all
 
       expect(locales[:foo][:test]).to eq 'foo'
     end
@@ -31,47 +26,47 @@ describe FastlaneLocaleMap do # rubocop:todo Metrics/BlockLength
 
   describe '.app_store_connect' do
     it 'returns only App Store Connect locale codes' do
-      expect(described_class.app_store_connect.length).to eq expected_locale_count
+      expect(map.app_store_connect.length).to eq expected_locale_count
     end
 
     it 'returns a hash' do
-      expect(described_class.app_store_connect).to be_a Hash
+      expect(map.app_store_connect).to be_a Hash
     end
 
     it 'all hash values are strings' do
-      expect(described_class.app_store_connect.values).to all(be_a String)
+      expect(map.app_store_connect.values).to all(be_a String)
     end
   end
 
   describe '.google_play' do
     it 'returns only Play Store locale codes' do
-      expect(described_class.google_play.length).to eq expected_locale_count
+      expect(map.google_play.length).to eq expected_locale_count
     end
 
     it 'returns a hash' do
-      expect(described_class.google_play).to be_a Hash
+      expect(map.google_play).to be_a Hash
     end
 
     it 'all hash values are strings' do
-      expect(described_class.google_play.values).to all(be_a String)
+      expect(map.google_play.values).to all(be_a String)
     end
   end
 
   describe '.iso_codes' do
     it 'returns only ISO codes' do
-      expect(described_class.iso_codes.length).to eq expected_locale_count
+      expect(map.iso_codes.length).to eq expected_locale_count
     end
 
     it 'returns a hash' do
-      expect(described_class.iso_codes).to be_a Hash
+      expect(map.iso_codes).to be_a Hash
     end
 
     it 'all hash values are strings' do
-      expect(described_class.iso_codes.values).to all(be_a String)
+      expect(map.iso_codes.values).to all(be_a String)
     end
 
     it 'all languages keys are ISO locale codes with dashes removed' do
-      described_class.all.each do |key, locale|
+      map.all.each do |key, locale|
         expect(key.to_s).to eq locale[:iso].gsub('-', '')
       end
     end
@@ -79,20 +74,20 @@ describe FastlaneLocaleMap do # rubocop:todo Metrics/BlockLength
 
   describe '.add_provider' do
     it 'adds the provider to the list' do # rubocop:todo RSpec/MultipleExpectations
-      expect(described_class.providers).to be_empty
-      described_class.add_provider TestLocaleProvider.new
-      expect(described_class.providers.length).to eq 1
+      expect(map.providers).to be_empty
+      map.add_provider TestLocaleProvider.new
+      expect(map.providers.length).to eq 1
     end
 
     it 'raises for invalid providers' do
       expect do
-        described_class.add_provider Object.new
+        map.add_provider Object.new
       end.to raise_error(RuntimeError)
     end
 
     it 'raises for non-conforming providers' do
       expect do
-        described_class.add_provider NonConformingLocaleProvider.new
+        map.add_provider NonConformingLocaleProvider.new
       end.to raise_error(RuntimeError)
     end
   end
