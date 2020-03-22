@@ -1,9 +1,8 @@
 require 'spec_helper'
 
 describe LocaleMap do # rubocop:todo Metrics/BlockLength
-
   expected_locale_count = 39
-  let(:map) { LocaleMap.new }
+  let(:map) { described_class.new }
 
   describe '.all' do
     it 'returns all locales' do

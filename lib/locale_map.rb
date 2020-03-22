@@ -1,12 +1,16 @@
-class LocaleMap # rubocop:todo Metrics/ModuleLength
-
-    attr_accessor :providers
+##
+# This class provides a map of locale codes between Google Play and App Store Connect.
+# It's expected that consumers of this class will add the locale codes used by their own
+# systems to this mapping.
+# Locales are keyed by ISO code (which is included with each locale)
+class LocaleMap # rubocop:todo Metrics/ClassLength
+  attr_accessor :providers
 
   def initialize
     @providers = []
   end
 
-  def all()
+  def all
     require 'deep_merge'
 
     locales = self.locales

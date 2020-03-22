@@ -2,7 +2,7 @@ require 'coveralls'
 Coveralls.wear!
 require 'locale_map'
 require 'locale_provider'
-require 'helpers/LocaleProviders'
+require 'helpers/locale_providers'
 
 RSpec.configure do |config|
   config.color = true
